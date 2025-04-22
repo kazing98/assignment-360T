@@ -1,0 +1,238 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > Player</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.example.firstway</a>
+</div>
+
+<h1>Coverage Summary for Class: Player (org.example.firstway)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Player</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (17/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86.1%
+  </span>
+  <span class="absValue">
+    (31/36)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package org.example.firstway;
+&nbsp;
+&nbsp;/**
+&nbsp; * Represents a player in a message-passing system.
+&nbsp; * Each player sends a message to the next player in a chain.
+&nbsp; */
+&nbsp;public class Player {
+&nbsp;    // Fields
+&nbsp;    private Player nextPlayer;
+&nbsp;    private String name;
+&nbsp;    boolean initiative;
+<b class="fc">&nbsp;    private int sentMessageCounter = 0;</b>
+<b class="fc">&nbsp;    private int receivedRepliesCounter = 0;</b>
+<b class="fc">&nbsp;    private final int MAX_MESSAGES = 10;</b>
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Constructs a new Player.
+&nbsp;     *
+&nbsp;     * @param name       the name of the player.
+&nbsp;     * @param initiative true if this player starts the communication(or initiator).
+&nbsp;     */
+<b class="fc">&nbsp;    Player(String name, boolean initiative) {</b>
+<b class="fc">&nbsp;        this.name = name;</b>
+<b class="fc">&nbsp;        this.initiative = initiative;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sets the next player to whom message has to be sent.
+&nbsp;     *
+&nbsp;     * @param nextPlayer the next player
+&nbsp;     */
+&nbsp;    public void setNextPlayer(Player nextPlayer) {
+<b class="fc">&nbsp;        this.nextPlayer = nextPlayer;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Sends a message to the next player.
+&nbsp;     *
+&nbsp;     * @param message the message to send
+&nbsp;     */
+&nbsp;    public void sendMessage(String message) {
+&nbsp;
+&nbsp;        /*
+&nbsp;        Using Ternary operator to Assign Player names and prepare the message to be sent.
+&nbsp;        This works only for two players. For more than two players, we need to change the logic accordingly.
+&nbsp;         */
+<b class="fc">&nbsp;        String newMessage = (initiative ? &quot;Player1&quot; : &quot;Player2&quot;)</b>
+<b class="fc">&nbsp;                + (initiative ? &quot; sent: &quot; : &quot; received: &quot;)</b>
+<b class="fc">&nbsp;                + &quot; &quot; + messageCountToStr(sentMessageCounter)</b>
+&nbsp;                + &quot; &quot; + message;
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;        System.out.println(newMessage);</b>
+<b class="fc">&nbsp;        sentMessageCounter++;</b>
+<b class="fc">&nbsp;        nextPlayer.receiveMessage(message);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Receives the message and sends to the next player.
+&nbsp;     *
+&nbsp;     * @param message the message to send
+&nbsp;     */
+&nbsp;    public void receiveMessage(String message) {
+&nbsp;
+&nbsp;        // Creating reply message
+<b class="fc">&nbsp;        String reply = message + &quot; | response : &quot; + (sentMessageCounter + 1);</b>
+&nbsp;
+<b class="fc">&nbsp;        if (!initiative) {</b>
+&nbsp;            // Responder sends reply
+<b class="fc">&nbsp;            sendMessage(reply);</b>
+&nbsp;        } else {
+&nbsp;            // Initiator handles reply
+<b class="fc">&nbsp;            receivedRepliesCounter++;</b>
+<b class="fc">&nbsp;            if (receivedRepliesCounter &lt; MAX_MESSAGES) {</b>
+<b class="fc">&nbsp;                sendMessage(&quot;Message from &quot; + name);</b>
+&nbsp;            } else {
+<b class="fc">&nbsp;                System.out.println(name + &quot; has sent and received 10 messages. Stopping...&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Converts messageCounter(int) to their English count(String).
+&nbsp;     *
+&nbsp;     * @param messageCounter count of the message
+&nbsp;     */
+&nbsp;    public String messageCountToStr(int messageCounter) {
+<b class="fc">&nbsp;        return switch (messageCounter) {</b>
+<b class="fc">&nbsp;            case 0 -&gt; &quot;First&quot;;</b>
+<b class="fc">&nbsp;            case 1 -&gt; &quot;Second&quot;;</b>
+<b class="fc">&nbsp;            case 2 -&gt; &quot;Third&quot;;</b>
+<b class="fc">&nbsp;            case 3 -&gt; &quot;Fourth&quot;;</b>
+<b class="fc">&nbsp;            case 4 -&gt; &quot;Fifth&quot;;</b>
+<b class="fc">&nbsp;            case 5 -&gt; &quot;Sixth&quot;;</b>
+<b class="fc">&nbsp;            case 6 -&gt; &quot;Seventh&quot;;</b>
+<b class="fc">&nbsp;            case 7 -&gt; &quot;Eighth&quot;;</b>
+<b class="fc">&nbsp;            case 8 -&gt; &quot;Ninth&quot;;</b>
+<b class="fc">&nbsp;            default -&gt; &quot;Tenth&quot;;</b>
+&nbsp;        };
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    /**
+&nbsp;     * Main method of java.firstway package.
+&nbsp;     * Communication starts from here.
+&nbsp;     */
+&nbsp;    public static void main(String[] args) {
+&nbsp;
+&nbsp;        // Player Instances
+<b class="nc">&nbsp;        Player initiator = new Player(&quot;Player1&quot;, true);</b>
+<b class="nc">&nbsp;        Player secondPlayer = new Player(&quot;Player2&quot;, false);</b>
+&nbsp;
+&nbsp;        // Setting nextPlayer
+<b class="nc">&nbsp;        initiator.setNextPlayer(secondPlayer);</b>
+<b class="nc">&nbsp;        secondPlayer.setNextPlayer(initiator);</b>
+&nbsp;
+&nbsp;        // Starting the communication
+<b class="nc">&nbsp;        initiator.sendMessage(&quot;Message from Player1&quot;);</b>
+&nbsp;
+&nbsp;
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-04-12 19:08</div>
+</div>
+</body>
+</html>

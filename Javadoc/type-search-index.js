@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"org.example.firstway","l":"Player"},{"p":"org.example.secondway","l":"PlayerInitiator"},{"p":"org.example.secondway","l":"PlayerResponder"}];updateSearchResults();

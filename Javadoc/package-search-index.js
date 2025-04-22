@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.example.firstway"},{"l":"org.example.secondway"}];updateSearchResults();
